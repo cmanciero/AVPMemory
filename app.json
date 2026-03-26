@@ -1,0 +1,27 @@
+{
+	"expo": {
+		"name": "AVP Memory Game",
+		"slug": "avp-memory-game",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./assets/cards/avp-logo.png",
+		"userInterfaceStyle": "light",
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.avp.memorygame"
+		},
+		"android": {
+			"package": "com.avp.memorygame"
+		},
+		"plugins": [
+			[
+				"react-native-google-mobile-ads",
+				{
+					"androidAppId": "ca-app-pub-3940256099942544~3347511713",
+					"iosAppId": "ca-app-pub-3940256099942544~1458002511"
+				}
+			]
+		]
+	}
+}
