@@ -19,6 +19,11 @@ interface GoogleMobileAdsModule {
 
 let adsModule: GoogleMobileAdsModule | null = null;
 
+const PRODUCTION_BANNER_UNIT_IDS = {
+	ios: 'ca-app-pub-9243961400167403~7235573943',
+	android: 'ca-app-pub-9243961400167403~7451196368',
+} as const;
+
 try {
 	// This stays lazy so Expo Go can boot without the native ads module present.
 	// eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -40,14 +45,34 @@ export function AdBanner(): React.JSX.Element {
 	}
 
 	const { BannerAd, BannerAdSize, TestIds } = adsModule;
+	const unitId = getBannerUnitId(TestIds.BANNER);
 
 	return (
 		<BannerAd
 			size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-			unitId={TestIds.BANNER}
+			unitId={unitId}
 			requestOptions={{ requestNonPersonalizedAdsOnly: true }}
 		/>
 	);
+}
+
+function getBannerUnitId(testId: string): string {
+	if (__DEV__) {
+		return testId;
+	}
+
+	const productionUnitId = Platform.select({
+		ios: PRODUCTION_BANNER_UNIT_IDS.ios,
+		android: PRODUCTION_BANNER_UNIT_IDS.android,
+		default: testId,
+	});
+
+	// Keep serving test ads until real IDs are configured.
+	if (productionUnitId.includes('xxxxxxxxxxxxxxxx')) {
+		return testId;
+	}
+
+	return productionUnitId;
 }
 
 export function isNativeAdsAvailable(): boolean {
