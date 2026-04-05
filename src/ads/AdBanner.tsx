@@ -67,12 +67,21 @@ function getBannerUnitId(testId: string): string {
 		default: testId,
 	});
 
-	// Keep serving test ads until real IDs are configured.
-	if (productionUnitId.includes('xxxxxxxxxxxxxxxx')) {
+	// Keep serving test ads until real IDs are configured and valid.
+	if (!isValidAdUnitId(productionUnitId)) {
 		return testId;
 	}
 
 	return productionUnitId;
+}
+
+function isValidAdUnitId(value: string): boolean {
+	// Ad unit IDs must contain "/". App IDs contain "~" and are invalid here.
+	if (!value.includes('/')) {
+		return false;
+	}
+
+	return !value.includes('xxxxxxxx');
 }
 
 export function isNativeAdsAvailable(): boolean {

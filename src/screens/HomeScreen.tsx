@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Animated, Dimensions, Image, Pressable, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, View } from 'react-native';
 
-import { CARD_BACK } from '../constants/cards';
+import APP_LOGO from '../../assets/app-logo.png';
 import { Difficulty } from '../types';
 
 const { width: SCREEN_W } = Dimensions.get('window');
@@ -11,9 +11,9 @@ const { width: SCREEN_W } = Dimensions.get('window');
 const STAR_COUNT = 8;
 
 const DIFFICULTY_OPTIONS: { level: Difficulty; label: string; stars: string; bg: string; border: string }[] = [
-	{ level: 'easy', label: 'EASY', stars: '⭐', bg: '#57cc99', border: '#38a169' },
-	{ level: 'medium', label: 'MEDIUM', stars: '⭐⭐', bg: '#f9c74f', border: '#e9a820' },
-	{ level: 'hard', label: 'HARD', stars: '⭐⭐⭐', bg: '#f94144', border: '#c1121f' },
+	{ level: 'easy', label: 'EASY', stars: '⭐', bg: '#7a8fd6', border: '#5b73c3' },
+	{ level: 'medium', label: 'MEDIUM', stars: '⭐⭐', bg: '#6a81cc', border: '#4f67b5' },
+	{ level: 'hard', label: 'HARD', stars: '⭐⭐⭐', bg: '#5a72bf', border: '#465ca8' },
 ];
 
 interface HomeScreenProps {
@@ -166,11 +166,13 @@ export function HomeScreen({ selectedLevel, onSelectLevel, onPlay, onViewScorebo
 			return;
 		}
 
-		// Bounce the button then navigate
+		// Start bounce feedback, then navigate on the next frame outside animation callbacks.
 		Animated.sequence([
 			Animated.spring(playPulse, { toValue: 1.18, friction: 3, useNativeDriver: true }),
 			Animated.spring(playPulse, { toValue: 1, useNativeDriver: true }),
-		]).start(() => onPlay());
+		]).start();
+
+		requestAnimationFrame(onPlay);
 	}, [isTestEnvironment, onPlay, playPulse]);
 
 	const handleScoreboard = useCallback(() => {
@@ -183,9 +185,9 @@ export function HomeScreen({ selectedLevel, onSelectLevel, onPlay, onViewScorebo
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
-			<StatusBar barStyle='dark-content' />
+			<StatusBar barStyle='light-content' />
 			<LinearGradient
-				colors={['#fffbe6', '#fff3d7', '#ffe0a3', '#ffd580']}
+				colors={['#6b7fc9', '#5e73bb', '#5e539f', '#663c92']}
 				style={styles.gradient}
 			>
 				{/* ── Floating star decorations ── */}
@@ -219,7 +221,7 @@ export function HomeScreen({ selectedLevel, onSelectLevel, onPlay, onViewScorebo
 					{/* ── Logo ── */}
 					<Animated.View style={{ transform: [{ translateY: logoFloat }] }}>
 						<Image
-							source={CARD_BACK}
+							source={APP_LOGO}
 							style={styles.logo}
 							resizeMode='contain'
 						/>
@@ -317,7 +319,7 @@ const styles = StyleSheet.create({
 		height: 130,
 		borderRadius: 26,
 		marginBottom: 6,
-		shadowColor: '#f77f00',
+		shadowColor: '#2f3f7f',
 		shadowOffset: { width: 0, height: 8 },
 		shadowOpacity: 0.3,
 		shadowRadius: 14,
@@ -330,7 +332,7 @@ const styles = StyleSheet.create({
 	title: {
 		fontSize: 46,
 		fontWeight: '900',
-		color: '#003049',
+		color: '#f7f9ff',
 		textAlign: 'center',
 		letterSpacing: 0.5,
 		lineHeight: 52,
@@ -340,7 +342,7 @@ const styles = StyleSheet.create({
 	},
 	subtitle: {
 		fontSize: 17,
-		color: '#4a5568',
+		color: '#e8edff',
 		textAlign: 'center',
 		marginTop: 8,
 		marginBottom: 22,
@@ -353,7 +355,7 @@ const styles = StyleSheet.create({
 	chooseLabel: {
 		fontSize: 16,
 		fontWeight: '800',
-		color: '#003049',
+		color: '#f1f5ff',
 		marginBottom: 10,
 	},
 	diffRow: {
@@ -375,29 +377,29 @@ const styles = StyleSheet.create({
 	diffLabel: {
 		fontSize: 13,
 		fontWeight: '900',
-		color: '#003049',
+		color: '#f4f7ff',
 	},
 	diffLabelActive: {
-		color: '#001a2c',
+		color: '#ffffff',
 	},
 	checkmark: {
 		fontSize: 10,
 		fontWeight: '900',
-		color: '#003049',
+		color: '#f3f7ff',
 		marginTop: 4,
 		textAlign: 'center',
 	},
 	playBtn: {
 		flexDirection: 'row',
-		backgroundColor: '#f77f00',
+		backgroundColor: '#e8edff',
 		borderRadius: 24,
 		paddingVertical: 20,
 		paddingHorizontal: 56,
 		alignItems: 'center',
 		justifyContent: 'center',
 		borderWidth: 3,
-		borderColor: '#d62828',
-		shadowColor: '#f77f00',
+		borderColor: '#d8e2ff',
+		shadowColor: '#1f2e63',
 		shadowOffset: { width: 0, height: 8 },
 		shadowOpacity: 0.45,
 		shadowRadius: 14,
@@ -410,20 +412,20 @@ const styles = StyleSheet.create({
 	playText: {
 		fontSize: 30,
 		fontWeight: '900',
-		color: '#fff',
+		color: '#4d63aa',
 		letterSpacing: 2,
 	},
 	scoresBtn: {
 		paddingVertical: 12,
 		paddingHorizontal: 28,
-		backgroundColor: '#eae2b7',
+		backgroundColor: 'rgba(242, 246, 255, 0.2)',
 		borderRadius: 14,
-		borderWidth: 2,
-		borderColor: '#fcbf49',
+		borderWidth: 1.5,
+		borderColor: '#dfe8ff',
 	},
 	scoresText: {
 		fontSize: 18,
 		fontWeight: '800',
-		color: '#003049',
+		color: '#eef3ff',
 	},
 });

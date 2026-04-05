@@ -4,7 +4,7 @@
 		"slug": "avp-memory-game",
 		"version": "1.0.0",
 		"orientation": "portrait",
-		"icon": "./assets/cards/avp-logo.png",
+		"icon": "./assets/app-logo.png",
 		"userInterfaceStyle": "light",
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
@@ -23,5 +23,9 @@
 				}
 			]
 		]
+	},
+	"react-native-google-mobile-ads": {
+		"android_app_id": "ca-app-pub-9243961400167403~7451196368",
+		"ios_app_id": "ca-app-pub-9243961400167403~7235573943"
 	}
 }

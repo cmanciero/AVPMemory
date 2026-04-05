@@ -1,3 +1,4 @@
+import { LinearGradient } from 'expo-linear-gradient';
 import React from 'react';
 import { Pressable, SafeAreaView, StyleSheet, Text } from 'react-native';
 
@@ -18,29 +19,35 @@ export function ScoreboardScreen({ entries, onBack }: ScoreboardScreenProps): Re
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
-			<Pressable
-				onPress={handleBack}
-				style={styles.backBtn}
-				testID='scoreboard-back'
+			<LinearGradient
+				colors={['#6c80ca', '#5e74bc', '#5d539f', '#653c92']}
+				style={styles.gradient}
 			>
-				<Text style={styles.backText}>← Back</Text>
-			</Pressable>
-			<ScoreboardList entries={entries} />
+				<Pressable
+					onPress={handleBack}
+					style={styles.backBtn}
+					testID='scoreboard-back'
+				>
+					<Text style={styles.backText}>← Back</Text>
+				</Pressable>
+				<ScoreboardList entries={entries} />
+			</LinearGradient>
 		</SafeAreaView>
 	);
 }
 
 const styles = StyleSheet.create({
-	safeArea: { flex: 1, backgroundColor: '#fff8ea', paddingHorizontal: 16, paddingTop: 12 },
+	safeArea: { flex: 1 },
+	gradient: { flex: 1, paddingHorizontal: 16, paddingTop: 12 },
 	backBtn: {
 		alignSelf: 'flex-start',
-		backgroundColor: '#eae2b7',
+		backgroundColor: 'rgba(241, 246, 255, 0.2)',
 		borderRadius: 10,
 		paddingVertical: 8,
 		paddingHorizontal: 16,
 		borderWidth: 2,
-		borderColor: '#fcbf49',
+		borderColor: '#dde7ff',
 		marginBottom: 12,
 	},
-	backText: { fontWeight: '800', color: '#003049', fontSize: 15 },
+	backText: { fontWeight: '800', color: '#eef3ff', fontSize: 15 },
 });

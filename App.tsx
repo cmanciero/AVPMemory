@@ -1,8 +1,9 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 import { GameScreen } from './src/screens/GameScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { ScoreboardScreen } from './src/screens/ScoreboardScreen';
+import { initializeAdsRuntime } from './src/ads/runtime';
 import { getScoreboardEntries } from './src/storage/scoreboard';
 import { Difficulty, ScoreEntry } from './src/types';
 
@@ -12,6 +13,10 @@ export default function App(): React.JSX.Element {
 	const [screen, setScreen] = useState<Screen>('home');
 	const [level, setLevel] = useState<Difficulty>('easy');
 	const [scores, setScores] = useState<ScoreEntry[]>([]);
+
+	useEffect(() => {
+		void initializeAdsRuntime();
+	}, []);
 
 	const handleSelectLevel = useCallback((next: Difficulty) => {
 		setLevel(next);

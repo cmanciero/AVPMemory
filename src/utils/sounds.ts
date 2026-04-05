@@ -1,19 +1,35 @@
 /**
- * Feedback utility — haptic feedback fires on all supported devices out of the box.
- *
- * To enable audio sounds, add the following files to assets/sounds/ and then
- * uncomment the expo-av block at the bottom of this file:
- *
- *   assets/sounds/tap.mp3      — short click (button presses)
- *   assets/sounds/flip.mp3     — soft whoosh (card flip)
- *   assets/sounds/match.mp3    — cheerful chime (successful match)
- *   assets/sounds/win.mp3      — celebratory fanfare (game won)
- *
- * Run:  npx expo install expo-av
+ * Feedback utility with haptics and win music.
  */
+import { Audio, AVPlaybackStatus } from 'expo-av';
 import * as Haptics from 'expo-haptics';
 
 export type SoundKey = 'tap' | 'flip' | 'match' | 'win';
+
+let winSoundPromise: Promise<Audio.Sound | null> | null = null;
+
+async function getWinSound(): Promise<Audio.Sound | null> {
+  if (!winSoundPromise) {
+    winSoundPromise = Audio.Sound.createAsync(require('../../assets/sounds/win.wav')).then(({ sound }) => sound).catch(() => null);
+  }
+
+  return winSoundPromise;
+}
+
+async function playWinMusic(): Promise<void> {
+  const sound = await getWinSound();
+
+  if (!sound) {
+    return;
+  }
+
+  const status = await sound.getStatusAsync();
+
+  if ((status as AVPlaybackStatus).isLoaded) {
+    await sound.setPositionAsync(0);
+    await sound.playAsync();
+  }
+}
 
 export async function playFeedback(key: SoundKey): Promise<void> {
   try {
@@ -29,6 +45,7 @@ export async function playFeedback(key: SoundKey): Promise<void> {
         break;
       case 'win':
         await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        await playWinMusic();
         break;
     }
   } catch {
