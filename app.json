@@ -8,10 +8,12 @@
 		"userInterfaceStyle": "light",
 		"assetBundlePatterns": ["**/*"],
 		"ios": {
+			"buildNumber": "1",
 			"supportsTablet": true,
 			"bundleIdentifier": "com.avp.memorygame"
 		},
 		"android": {
+			"versionCode": 1,
 			"package": "com.avp.memorygame"
 		},
 		"plugins": [
